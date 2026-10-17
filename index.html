@@ -91,7 +91,6 @@
       line-height: 1.7; max-width: 650px;
     } 
 
-    
     /* ===== FOOTER ===== */
     .footer {
       background: var(--navy-dark); padding: 3rem 2rem 2rem;
@@ -112,6 +111,37 @@
     .footer-left p { font-size: 0.85rem; }
     .footer-right { font-size: 0.8rem; letter-spacing: 0.3px; }
 
+	  /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-title { font-size: 2.8rem; }
+      .hero-subtitle { font-size: 1.3rem; }
+    }
+    @media (max-width: 680px) {
+      .nav-links {
+        display: none; position: absolute; top: 70px; left: 0;
+        width: 100%; background: rgba(0, 36, 63, 0.98);
+        flex-direction: column; padding: 1rem; gap: 0;
+        border-bottom: 2px solid var(--gold);
+      }
+      .nav-links.active { display: flex; }
+      .nav-links li a { padding: 0.85rem 1.5rem; }
+      .hamburger { display: flex; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-subtitle { font-size: 1.1rem; }
+      .cta-box { padding: 3rem 1.5rem; }
+      .cta-box h2 { font-size: 1.7rem; }
+      .stat-row { justify-content: center; }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -138,8 +168,8 @@
 
   <!-- Officers -->
   
-<div class="flex-container">
-  <div class="centered-box">
+ <section class="pillars-section">
+    <div class="section-container">
 	<span class="section-label fade-up">President</span>    	
       <p class="section-subtext fade-up">
         Usman Bello, MIS - Technology Management
@@ -165,18 +195,9 @@
         Shania Nelson, Finance
       </p>
   </div>
-</div>
+</section>
 
-<style>
-  .flex-container {
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center;     /* Centers vertically */
-    height: 100vh;           /* Sets container to full viewport height */
-  }
-  
-</style>
-
+<!-- FOOTER -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
@@ -189,6 +210,27 @@
     </div>
   </footer>
 
+	<script>
+    // Mobile hamburger toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Scroll-triggered fade-up animations
+    const faders = document.querySelectorAll('.fade-up');
+    const observerOpts = { threshold: 0.15, rootMargin: '0px 0px -40px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOpts);
+    faders.forEach((el) => observer.observe(el));
+  </script>
   
 </body>
 </html>
